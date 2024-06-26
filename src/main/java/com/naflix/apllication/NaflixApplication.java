@@ -1,5 +1,6 @@
 package com.naflix.apllication;
 
+import com.naflix.apllication.service.ConsumeApi;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ public class NaflixApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-
+		String json = ConsumeApi.consumeApi("https://www.omdbapi.com/?t=matrix&apikey=1e8a0a02");
+		System.out.println(json);
     }
 }
