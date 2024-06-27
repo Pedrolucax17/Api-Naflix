@@ -8,6 +8,8 @@ import org.aspectj.apache.bcel.classfile.Unknown;
 public record DataSeries(
         @JsonAlias("Title")
         String title,
+        @JsonAlias("totalSeasons")
+        Integer totalSeason,
         @JsonAlias("imdbRating")
         String rating,
         @JsonAlias("Actors")
