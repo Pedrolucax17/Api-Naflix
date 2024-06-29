@@ -3,19 +3,23 @@ package com.naflix.apllication.main;
 import com.naflix.apllication.model.DataEpisode;
 import com.naflix.apllication.model.DataSeason;
 import com.naflix.apllication.model.DataSeries;
+import com.naflix.apllication.model.Serie;
 import com.naflix.apllication.service.ConsumeApi;
 import com.naflix.apllication.service.ConvertData;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     private Scanner sc = new Scanner(System.in);
     private final String BASE_URL = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=1e8a0a02";
     private ConvertData convertData = new ConvertData();
+    private List<DataSeries> dataSeries = new ArrayList<>();
     @Autowired
     private ConsumeApi consumeApi;
 
@@ -25,7 +29,7 @@ public class Main {
             String menu = """
                 1 - Buscar séries
                 2 - Buscar episódios
-                
+                3- Listar séries buscadas
                 0 - Sair                                 
                 """;
 
@@ -40,6 +44,9 @@ public class Main {
                 case 2:
                     searchEpisode();
                     break;
+                case 3:
+                    listSearchedSeries();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -50,8 +57,9 @@ public class Main {
     }
 
     private void seachSerie(){
-        DataSeries serie = getDataSerie();
-        System.out.println(serie);
+        DataSeries Dataserie = getDataSerie();
+        dataSeries.add(Dataserie);
+        System.out.println(Dataserie);
     }
 
     private DataSeries getDataSerie(){
@@ -74,5 +82,14 @@ public class Main {
             seasons.add(season);
         }
         seasons.forEach(System.out::println);
+    }
+
+    private void listSearchedSeries(){
+        List<Serie> series = new ArrayList<>();
+        series = dataSeries.stream().map(Serie::new).collect(Collectors.toList());
+
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenre))
+                .forEach(System.out::println);
     }
 }

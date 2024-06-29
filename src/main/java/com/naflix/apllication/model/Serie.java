@@ -1,12 +1,30 @@
 package com.naflix.apllication.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 import java.util.OptionalDouble;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@Entity(name = "Serie")
+@Table(name = "tbl_serie")
 public class Serie {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
+
+    @Column(name = "total_season")
     private Integer totalSeason;
     private Double rating;
+
+    @Enumerated(EnumType.STRING)
     private Category genre;
     private String actors;
     private String plot;
@@ -16,66 +34,10 @@ public class Serie {
         this.title = dataSeries.title();
         this.totalSeason = dataSeries.totalSeason();
         this.rating = OptionalDouble.of(Double.parseDouble(dataSeries.rating())).orElse(0.0);
-        this.genre = Category.fromString(dataSeries.category());
+        this.genre = Category.fromString(dataSeries.category().split(",")[0].trim());
         this.actors = dataSeries.actors();
         this.plot = dataSeries.plot();
         this.poster = dataSeries.poster();
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getTotalSeason() {
-        return totalSeason;
-    }
-
-    public void setTotalSeason(Integer totalSeason) {
-        this.totalSeason = totalSeason;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Category getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Category genre) {
-        this.genre = genre;
-    }
-
-    public String getActors() {
-        return actors;
-    }
-
-    public void setActors(String actors) {
-        this.actors = actors;
-    }
-
-    public String getPlot() {
-        return plot;
-    }
-
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
     }
 
     @Override
@@ -93,11 +55,10 @@ public class Serie {
 
     @Override
     public String toString() {
-        return "Serie{" +
-                "title='" + title + '\'' +
+        return "Genre=" + genre +
+                ", title='" + title + '\'' +
                 ", totalSeason=" + totalSeason +
                 ", rating=" + rating +
-                ", genre=" + genre +
                 ", actors='" + actors + '\'' +
                 ", plot='" + plot + '\'' +
                 ", poster='" + poster + '\'' +
